@@ -26,6 +26,7 @@
             data: data,
             success: function(response) {
                 get_records();
+                get_daily_status();
                 $('.heatra-details-form-add').slideToggle();
             },
             error: function(error) {
@@ -155,5 +156,42 @@
         });
 
     }
+
+    document.getElementById('input-date').valueAsDate = new Date();
+
+    get_daily_status();
+
+    function get_daily_status() {
+
+        var data = {
+            action: 'heatra_daily_status',
+            date: $('#input-date').val()
+        };
+
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: ajax_url,
+            data: data,
+            success: function(response) {
+
+                $('.nutri-calories').html( response.calories.count + '<br>' + response.calories.percentage );
+                $('.nutri-protein').html( response.protein.count + '<br>' + response.protein.percentage );
+                $('.nutri-carbs').html( response.carbs.count + '<br>' + response.carbs.percentage );
+                $('.nutri-fat').html( response.fat.count + '<br>' + response.fat.percentage );
+                $('.nutri-fiber').html( response.fiber.count + '<br>' + response.fiber.percentage );
+                $('.nutri-sugar').html( response.sugar.count + '<br>' + response.sugar.percentage );
+
+            },
+            error: function(error) {
+                // alert(error);
+            }
+        });
+
+    }
+
+    $(document).on('click', '.get-daily-status', function() {
+        get_daily_status();
+    });
 
 })( jQuery );

@@ -35,7 +35,7 @@ function shortcode_health_tracker( $atts ) {
 add_action( 'wp_enqueue_scripts', 'heatra_wp_enqueue_scripts' );
 function heatra_wp_enqueue_scripts() {
 
-	wp_register_script( 'heatra-script-name', plugin_dir_url( __FILE__ ) . 'scripts.js', array( 'jquery' ), '1.0.1', true );
+	wp_register_script( 'heatra-script-name', plugin_dir_url( __FILE__ ) . 'scripts.js', array( 'jquery' ), '1.0.3', true );
 
 	wp_localize_script(
 		'heatra-script-name',
@@ -180,4 +180,137 @@ function heatra_get_nutrition() {
     echo json_encode( $results );
     wp_die();
 
+}
+
+add_action( 'wp_ajax_heatra_daily_status', 'heatra_daily_status' );
+add_action( 'wp_ajax_priv_heatra_daily_status', 'heatra_daily_status' );
+function heatra_daily_status() {
+
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'heatra_records';
+	$table_two = $wpdb->prefix . 'heatra_nutrients';
+
+	$date = $_POST['date'];
+
+	$results = $wpdb->get_results( 
+		"
+		SELECT
+		b.amount as calories,
+		c.amount as protein,
+		d.amount as carbs,
+		e.amount as fat,
+		f.amount as fiber,
+		g.amount as sugar,
+
+		a.amount as multiplier
+
+		FROM $table_name a
+
+		LEFT JOIN $table_two b
+		ON b.ref_food_id = a.ref_food_id
+
+		LEFT JOIN $table_two c
+		ON c.ref_food_id = a.ref_food_id
+
+		LEFT JOIN $table_two d
+		ON d.ref_food_id = a.ref_food_id
+
+		LEFT JOIN $table_two e
+		ON e.ref_food_id = a.ref_food_id
+
+		LEFT JOIN $table_two f
+		ON f.ref_food_id = a.ref_food_id
+
+		LEFT JOIN $table_two g
+		ON g.ref_food_id = a.ref_food_id
+
+		WHERE
+		b.name = 'calories' AND
+		c.name = 'protein' AND
+		d.name = 'carbs' AND
+		e.name = 'fat' AND
+		f.name = 'fiber' AND
+		g.name = 'sugar' AND
+
+		a.date_posted LIKE '%" . $date . "%'
+		"
+	);
+
+	$calories = 0;
+	$protein = 0;
+	$carbs = 0;
+	$fat = 0;
+	$fiber = 0;
+	$sugar = 0;
+
+	if( $results ) {
+
+		$items = array();
+
+		foreach( $results as $item ) {
+
+			$calories += $item->calories * $item->multiplier;
+			$protein += $item->protein * $item->multiplier;
+			$carbs += $item->carbohydrates * $item->multiplier;
+			$fat += $item->fat * $item->multiplier;
+			$fiber += $item->fiber * $item->multiplier;
+			$sugar += $item->sugar * $item->multiplier;
+
+			$items[] = $item;
+
+		}
+
+		$results = $items;
+
+	}
+
+	$results = array(
+		array(
+			'calories' => $calories,
+			'protein' => $protein,
+			'carbs' => $carbs,
+			'fat' => $fat,
+			'fiber' => $fiber,
+			'sugar' => $sugar,
+		),
+		$items
+	);
+
+	$results = array(
+		'calories' => array(
+			'count' => $calories,
+			'percentage' => count_percentage( $calories, 2000 )
+		),
+		'protein' => array(
+			'count' => $protein,
+			'percentage' => count_percentage( $protein, 56 )
+		),
+		'carbs' => array(
+			'count' => $carbs,
+			'percentage' => count_percentage( $carbs, 200 )
+		),
+		'fat' => array(
+			'count' => $fat,
+			'percentage' => count_percentage( $fat, 40 )
+		),
+		'fiber' => array(
+			'count' => $fiber,
+			'percentage' => count_percentage( $fiber, 25 )
+		),
+		'sugar' => array(
+			'count' => $sugar,
+			'percentage' => count_percentage( $sugar, 80 )
+		),
+	);
+
+    // return
+    echo json_encode( (object) $results );
+    wp_die();
+
+}
+
+function count_percentage($a, $b) {
+	$percent = $a/$b;
+	return number_format( $percent * 100, 2 ) . '%';
 }
