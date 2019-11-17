@@ -12,6 +12,15 @@
 			<button type="submit" class="submit-form">Submit</button>
 		</form>
 
+		<table class="heatra-food-logs">
+			<thead>
+				<th>Date</th>
+				<th>Food</th>
+				<th>Grams</th>
+			</thead>
+			<tbody></tbody>
+		</table>
+
 	</div>
 	
 </div>
@@ -20,5 +29,8 @@
 .heatra-details-form {
 	margin-top: 21px;
 	display: none;
+}
+.heatra-food-logs {
+	margin-top: 20px;
 }
 </style>
