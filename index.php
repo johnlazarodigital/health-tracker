@@ -35,7 +35,7 @@ function shortcode_health_tracker( $atts ) {
 add_action( 'wp_enqueue_scripts', 'heatra_wp_enqueue_scripts' );
 function heatra_wp_enqueue_scripts() {
 
-	wp_register_script( 'heatra-script-name', plugin_dir_url( __FILE__ ) . 'scripts.js', array( 'jquery' ), '1.0.0', true );
+	wp_register_script( 'heatra-script-name', plugin_dir_url( __FILE__ ) . 'scripts.js', array( 'jquery' ), '1.0.1', true );
 
 	wp_localize_script(
 		'heatra-script-name',
@@ -135,3 +135,49 @@ function heatra_get_foods() {
 
 }
 
+
+add_action( 'wp_ajax_heatra_get_nutrition', 'heatra_get_nutrition' );
+add_action( 'wp_ajax_priv_heatra_get_nutrition', 'heatra_get_nutrition' );
+function heatra_get_nutrition() {
+
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'heatra_nutrients';
+
+	$food_id = $_POST['food_id'];
+	$amount = $_POST['amount'];
+
+	$results = $wpdb->get_results( 
+		"
+		SELECT *
+		FROM $table_name
+		WHERE ref_food_id = '" . $food_id . "'
+		"
+	);
+
+	if( $results ) {
+
+		$items = array();
+
+		foreach( $results as $item ) {
+
+			$total_amount = $item->amount * $amount;
+
+			$item->total_amount = $total_amount;
+
+			$items[] = $item;
+
+		}
+
+		$results = $items;
+
+	}
+
+	// if( ! $results )
+	// 	$results = $wpdb->last_error;
+
+    // return
+    echo json_encode( $results );
+    wp_die();
+
+}

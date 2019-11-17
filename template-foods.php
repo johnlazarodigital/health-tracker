@@ -17,6 +17,7 @@
 				<th>Date</th>
 				<th>Food</th>
 				<th>Grams</th>
+				<th>Actions</th>
 			</thead>
 			<tbody></tbody>
 		</table>
@@ -32,5 +33,8 @@
 }
 .heatra-food-logs {
 	margin-top: 20px;
+}
+.heatra-food-logs tr:nth-child(even) {
+	display: none;
 }
 </style>

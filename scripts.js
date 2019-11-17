@@ -29,7 +29,7 @@
                 $('.heatra-details-form-add').slideToggle();
             },
             error: function(error) {
-                alert(error);
+                // alert(error);
             }
         });
 
@@ -37,6 +37,53 @@
 
     $(document).on('click', '.heatra-food-logs-button', function() {
         $('.heatra-food-logs').slideToggle();
+    });
+
+    $(document).on('click', '.heatra-food-logs button', function() {
+
+        var that = $(this);
+
+        if( $(this).parent().parent().next().is(":hidden") ) {
+
+            var foodId = $(this).data('food-id');
+            var amount = $(this).data('amount');
+
+            var data = {
+                action: 'heatra_get_nutrition',
+                food_id: foodId,
+                amount: amount
+            };
+
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: ajax_url,
+                data: data,
+                success: function(response) {
+
+                    var html = '<ul>';
+
+                    response.forEach(function(item) {
+
+                        html += '<li>' + item.name + ': ' + item.total_amount + ' ' + item.unit + '</td>';
+
+                    });
+
+                    html += '</ul>';
+
+                    that.parent().parent().next().find('td').html(html);
+            
+                    that.parent().parent().next().slideDown();
+
+                },
+                error: function(error) {
+                    // alert(error);
+                }
+            });
+
+        } else
+            $(this).parent().parent().next().slideUp();
+
     });
 
     get_records();
@@ -57,14 +104,22 @@
                 var html = '';
 
                 response.forEach(function(item) {
-                    html += '<tr><td>' + item.date_posted + '</td><td>' + item.name + '</td><td>' + item.amount + '</td></tr>';
+                    html += '<tr>\
+                                <td>' + item.date_posted + '</td>\
+                                <td>' + item.name + '</td>\
+                                <td>' + item.amount + '</td>\
+                                <td><button data-food-id="' + item.ref_food_id + '" data-amount="' + item.amount + '">View details</button></td>\
+                            </tr>\
+                            <tr>\
+                                <td colspan="4"></td>\
+                            </tr>';
                 });
 
                 $('.heatra-food-logs tbody').html(html);
 
             },
             error: function(error) {
-                alert(error);
+                // alert(error);
             }
         });
 
@@ -95,7 +150,7 @@
 
             },
             error: function(error) {
-                alert(error);
+                // alert(error);
             }
         });
 
