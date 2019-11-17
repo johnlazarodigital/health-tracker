@@ -39,13 +39,13 @@
         $('.heatra-food-logs').slideToggle();
     });
 
-    var data = {
-        action: 'heatra_get_record'
-    };
-
     get_records();
 
     function get_records() {
+
+        var data = {
+            action: 'heatra_get_record'
+        };
 
         $.ajax({
             type: 'get',
@@ -61,6 +61,37 @@
                 });
 
                 $('.heatra-food-logs tbody').html(html);
+
+            },
+            error: function(error) {
+                alert(error);
+            }
+        });
+
+    }
+
+    get_foods();
+
+    function get_foods() {
+
+        var data = {
+            action: 'heatra_get_foods'
+        };
+
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: ajax_url,
+            data: data,
+            success: function(response) {
+
+                var html = '';
+
+                response.forEach(function(item) {
+                    html += '<option value="' + item.id + '">' + item.name + '</option>';
+                });
+
+                $('.input-food').html(html);
 
             },
             error: function(error) {

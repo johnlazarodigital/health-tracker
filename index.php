@@ -110,3 +110,28 @@ function heatra_get_record() {
     wp_die();
 
 }
+
+add_action( 'wp_ajax_heatra_get_foods', 'heatra_get_foods' );
+add_action( 'wp_ajax_priv_heatra_get_foods', 'heatra_get_foods' );
+function heatra_get_foods() {
+
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'heatra_foods';
+
+	$results = $wpdb->get_results( 
+		"
+		SELECT *
+		FROM $table_name
+		"
+	);
+
+	if( ! $results )
+		$results = $wpdb->last_error;
+
+    // return
+    echo json_encode( $results );
+    wp_die();
+
+}
+
