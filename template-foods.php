@@ -15,47 +15,51 @@
 		<input type="date" id="input-date" required>
 		<button type="button" class="get-daily-status">Submit</button>
 
-		<table class="heatra-nutrients-status">
-			<thead>
-				<th></th>
-				<th>Calories</th>
-				<th>Carbs</th>
-				<th>Protein</th>
-				<th>Fats</th>
-				<th>Fiber</th>
-				<th>Sugar</th>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Target</td>
-					<td>2000</td>
-					<td>200g</td>
-					<td>56g</td>
-					<td>40g</td>
-					<td>25g</td>
-					<td>80g</td>
-				</tr>
-				<tr>
-					<td>Current</td>
-					<td class="nutri-calories"></td>
-					<td class="nutri-carbs"></td>
-					<td class="nutri-protein"></td>
-					<td class="nutri-fat"></td>
-					<td class="nutri-fiber"></td>
-					<td class="nutri-sugar"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table-container">
+			<table class="heatra-nutrients-status">
+				<thead>
+					<th></th>
+					<th>Calories</th>
+					<th>Carbs</th>
+					<th>Protein</th>
+					<th>Fats</th>
+					<th>Fiber</th>
+					<th>Sugar</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Target</td>
+						<td>2000</td>
+						<td>200g</td>
+						<td>56g</td>
+						<td>40g</td>
+						<td>25g</td>
+						<td>80g</td>
+					</tr>
+					<tr>
+						<td>Current</td>
+						<td class="nutri-calories"></td>
+						<td class="nutri-carbs"></td>
+						<td class="nutri-protein"></td>
+						<td class="nutri-fat"></td>
+						<td class="nutri-fiber"></td>
+						<td class="nutri-sugar"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
-		<table class="heatra-food-logs">
-			<thead>
-				<th>Date</th>
-				<th>Food</th>
-				<th>Grams</th>
-				<th>Actions</th>
-			</thead>
-			<tbody></tbody>
-		</table>
+		<div class="table-container">
+			<table class="heatra-food-logs">
+				<thead>
+					<th>Date</th>
+					<th>Food</th>
+					<th>Grams</th>
+					<th>Actions</th>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
 
 	</div>
 	
@@ -71,5 +75,19 @@
 }
 .heatra-food-logs tr:nth-child(even) {
 	display: none;
+}
+.table-container {
+	overflow-x: auto;
+}
+.heatra-nutrients-status {
+	width: 641px;
+}
+.heatra-food-logs {
+	width: 700px;
+}
+.heatra-food-logs ul {
+	margin: 0;
+	padding: 0 10px;
+	list-style: none;
 }
 </style>
