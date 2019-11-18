@@ -66,7 +66,12 @@
 
                     response.forEach(function(item) {
 
-                        html += '<li>' + item.name + ': ' + item.total_amount + ' ' + item.unit + '</td>';
+                        var unit = '';
+
+                        if( item.name != 'calories' )
+                            unit = 'g';
+
+                        html += '<li>' + item.name + ': ' + item.total_amount + unit + ' ' + item.unit + '</td>';
 
                     });
 
@@ -176,11 +181,11 @@
             success: function(response) {
 
                 $('.nutri-calories').html( response.calories.count + '<br>' + response.calories.percentage );
-                $('.nutri-protein').html( response.protein.count + '<br>' + response.protein.percentage );
-                $('.nutri-carbs').html( response.carbs.count + '<br>' + response.carbs.percentage );
-                $('.nutri-fat').html( response.fat.count + '<br>' + response.fat.percentage );
-                $('.nutri-fiber').html( response.fiber.count + '<br>' + response.fiber.percentage );
-                $('.nutri-sugar').html( response.sugar.count + '<br>' + response.sugar.percentage );
+                $('.nutri-protein').html( response.protein.count + 'g<br>' + response.protein.percentage );
+                $('.nutri-carbs').html( response.carbs.count + 'g<br>' + response.carbs.percentage );
+                $('.nutri-fat').html( response.fat.count + 'g<br>' + response.fat.percentage );
+                $('.nutri-fiber').html( response.fiber.count + 'g<br>' + response.fiber.percentage );
+                $('.nutri-sugar').html( response.sugar.count + 'g<br>' + response.sugar.percentage );
 
             },
             error: function(error) {

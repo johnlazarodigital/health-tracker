@@ -35,7 +35,7 @@ function shortcode_health_tracker( $atts ) {
 add_action( 'wp_enqueue_scripts', 'heatra_wp_enqueue_scripts' );
 function heatra_wp_enqueue_scripts() {
 
-	wp_register_script( 'heatra-script-name', plugin_dir_url( __FILE__ ) . 'scripts.js', array( 'jquery' ), '1.0.3', true );
+	wp_register_script( 'heatra-script-name', plugin_dir_url( __FILE__ ) . 'scripts.js', array( 'jquery' ), '1.0.4', true );
 
 	wp_localize_script(
 		'heatra-script-name',
@@ -312,5 +312,5 @@ function heatra_daily_status() {
 
 function count_percentage($a, $b) {
 	$percent = $a/$b;
-	return number_format( $percent * 100, 2 ) . '%';
+	return number_format( $percent * 100 ) . '%';
 }
