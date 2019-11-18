@@ -8,6 +8,7 @@
 				<option value="1">Papaya</option>
 				<option value="2">Banana</option>
 			</select><br><br>
+			<input type="datetime-local" class="input-date-posted" required><br><br>
 			<input type="text" class="input-amount" placeholder="Grams" required><br><br>
 			<button type="submit" class="submit-form">Submit</button>
 		</form>

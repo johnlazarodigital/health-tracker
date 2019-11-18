@@ -11,12 +11,11 @@
 
         event.preventDefault();
 
-        console.log('submitted');
-
         var data = {
             action: 'heatra_insert_to_db_function',
             food: $(this).find('.input-food').val(),
-            amount: $(this).find('.input-amount').val()
+            amount: $(this).find('.input-amount').val(),
+            date_posted: $(this).find('.input-date-posted').val()
         };
 
         $.ajax({
@@ -30,7 +29,7 @@
                 $('.heatra-details-form-add').slideToggle();
             },
             error: function(error) {
-                // alert(error);
+                alert(error);
             }
         });
 

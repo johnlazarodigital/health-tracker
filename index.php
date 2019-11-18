@@ -58,13 +58,16 @@ function heatra_insert_to_db_function() {
 
 	$food = $_POST['food'];
 	$amount = $_POST['amount'];
+	$date_posted = $_POST['date_posted'];
+	$date_posted = strftime('%Y-%m-%d %H:%M:%S', strtotime($date_posted));
 
 	$result = $wpdb->query( $wpdb->prepare( 
 		"
 		INSERT INTO $table_name
 		( date_posted, ref_food_id, amount )
-		VALUES ( NOW(), %d, %s )
+		VALUES ( %s, %d, %s )
 		",
+		$date_posted,
 		$food,
 		$amount
 	) );
@@ -163,7 +166,7 @@ function heatra_get_nutrition() {
 
 			$total_amount = $item->amount * $amount;
 
-			$item->total_amount = $total_amount;
+			$item->total_amount = number_format( (float) $total_amount, 2, '.', '' );
 
 			$items[] = $item;
 
@@ -268,7 +271,7 @@ function heatra_daily_status() {
 	$results = array(
 		array(
 			'calories' => $calories,
-			'protein' => $protein,
+			'protein' => number_format((float)$protein, 2, '.', ''),
 			'carbs' => $carbs,
 			'fat' => $fat,
 			'fiber' => $fiber,
@@ -279,27 +282,27 @@ function heatra_daily_status() {
 
 	$results = array(
 		'calories' => array(
-			'count' => $calories,
+			'count' => number_format( (float) $calories, 1, '.', '' ),
 			'percentage' => count_percentage( $calories, 2000 )
 		),
 		'protein' => array(
-			'count' => $protein,
+			'count' => number_format( (float) $protein, 1, '.', '' ),
 			'percentage' => count_percentage( $protein, 56 )
 		),
 		'carbs' => array(
-			'count' => $carbs,
+			'count' => number_format( (float) $carbs, 1, '.', '' ),
 			'percentage' => count_percentage( $carbs, 200 )
 		),
 		'fat' => array(
-			'count' => $fat,
+			'count' => number_format( (float) $fat, 1, '.', '' ),
 			'percentage' => count_percentage( $fat, 40 )
 		),
 		'fiber' => array(
-			'count' => $fiber,
+			'count' => number_format( (float) $fiber, 1, '.', '' ),
 			'percentage' => count_percentage( $fiber, 25 )
 		),
 		'sugar' => array(
-			'count' => $sugar,
+			'count' => number_format( (float) $sugar, 1, '.', '' ),
 			'percentage' => count_percentage( $sugar, 80 )
 		),
 	);
